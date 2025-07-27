@@ -1,6 +1,9 @@
 package com.example.securitydemo.jwt;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
@@ -55,6 +58,40 @@ public class JwtUtils
     public Key key()
     {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
+    }
+
+    public boolean validateJwtToken(String authToken)
+    {
+        try
+        {
+            System.out.println("Validating the token");
+            Jwts.parser().verifyWith((SecretKey) key()).build().parseSignedClaims(authToken);
+            return true;
+
+        }
+        catch(MalformedJwtException exception)
+        {
+            logger.error("Invalid JWT Token: {}", exception.getMessage());
+        }
+        catch (ExpiredJwtException exception)
+        {
+            logger.error("JWT Token has expired: {}", exception.getMessage());
+        }
+        catch (UnsupportedJwtException exception)
+        {
+            logger.error("JWT Token is unsupported: {}", exception.getMessage());
+        }
+        catch (IllegalArgumentException exception)
+        {
+            logger.error("JWT claims string is empty: {}", exception.getMessage());
+        }
+
+
+
+
+        return false;
+
+
     }
 
 
