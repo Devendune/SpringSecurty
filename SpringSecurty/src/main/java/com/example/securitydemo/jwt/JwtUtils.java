@@ -90,10 +90,6 @@ public class JwtUtils
         {
             logger.error("JWT claims string is empty: {}", exception.getMessage());
         }
-
-
-
-
         return false;
 
 
