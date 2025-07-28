@@ -28,7 +28,6 @@ Exception
 @Component
 public class AuthEntryPointJwt implements AuthenticationEntryPoint
 {
-
     private static final Logger logger = LoggerFactory.getLogger(AuthEntryPointJwt.class);
 
     @Override

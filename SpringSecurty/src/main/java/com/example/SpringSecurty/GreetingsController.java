@@ -31,7 +31,7 @@ public class GreetingsController
     private JwtUtils jwtUtils;
 
     @GetMapping("/hello")
-    public String getHelle()
+    public String getHello()
     {
         return "Hello Buddy";
     }
