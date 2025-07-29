@@ -1,5 +1,6 @@
 package com.example.SpringSecurty;
 
+import com.example.securitydemo.jwt.AuthEntryPointJwt;
 import com.example.securitydemo.jwt.AuthTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -33,10 +34,10 @@ public class SecurityConfig
     DataSource dataSource;
 
     @Autowired
-    private AuthTokenFilter unAuthorizedHandler;
+    private AuthEntryPointJwt unAuthorizedHandler;
 
     @Bean
-    private AuthTokenFilter authenticationJwtTokenFilter()
+    public AuthTokenFilter authenticationJwtTokenFilter()
     {
         return new AuthTokenFilter();
     }
@@ -46,7 +47,7 @@ public class SecurityConfig
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((requests) ->
                 requests.requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("api/signin").permitAll()
+                        .requestMatchers("/signin").permitAll()
                         .anyRequest().authenticated());
 
         http.sessionManagement(session->
@@ -62,7 +63,7 @@ public class SecurityConfig
     }
 
     @Bean
-    private AuthenticationManager authenticationManager(AuthenticationConfiguration builder) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration builder) throws Exception {
         return builder.getAuthenticationManager();
     }
 
